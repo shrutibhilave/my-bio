@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shruti Ganesh Bhilave — Technical Product Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F0EEE4;
+    --paper-dim:#E5E1D2;
+    --ink:#17233A;
+    --ink-soft:#4B5A70;
+    --blueprint:#2D5A7B;
+    --blueprint-dark:#16324F;
+    --signal:#D9812F;
+    --moss:#5C7A5E;
+    --line:#C9C2AE;
+    --line-strong:#9AA793;
+    --radius:2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Space Grotesk',sans-serif;
+    margin:0;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  a{color:var(--blueprint-dark);}
+  ::selection{background:var(--signal);color:var(--paper);}
+  :focus-visible{outline:2px solid var(--signal);outline-offset:3px;}
+
+  /* --- blueprint grid backdrop --- */
+  .grid-bg{
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:40px 40px;
+    background-position:-1px -1px;
+  }
+  .grid-bg-dark{
+    background-image:
+      linear-gradient(rgba(240,238,228,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(240,238,228,0.08) 1px, transparent 1px);
+    background-size:40px 40px;
+  }
+
+  /* --- layout shell --- */
+  .railnav{
+    position:fixed;
+    top:0;left:0;bottom:0;
+    width:88px;
+    background:var(--blueprint-dark);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+    padding:24px 0;
+    z-index:100;
+  }
+  .railnav .mark{
+    color:var(--paper);
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    writing-mode:vertical-rl;
+    letter-spacing:0.1em;
+  }
+  .railnav ul{
+    list-style:none;
+    margin:0;padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    align-items:center;
+    overflow-y:auto;
+  }
+  .railnav a{
+    color:rgba(240,238,228,0.55);
+    text-decoration:none;
+    font-size:10.5px;
+    writing-mode:vertical-rl;
+    letter-spacing:0.08em;
+    padding:5px 4px;
+    border-left:2px solid transparent;
+    transition:color .25s ease, border-color .25s ease;
+  }
+  .railnav a.active,.railnav a:hover{
+    color:var(--signal);
+    border-left-color:var(--signal);
+  }
+  .railnav .bracket{
+    color:rgba(240,238,228,0.4);
+    font-size:10px;
+    text-align:center;
+    writing-mode:vertical-rl;
+  }
+  main{ margin-left:88px; }
+
+  /* scroll progress rail */
+  .progress-track{
+    position:absolute;
+    left:42px;top:100px;bottom:100px;
+    width:2px;
+    background:rgba(240,238,228,0.15);
+  }
+  #progress-fill{
+    position:absolute;
+    left:0;top:0;width:100%;height:0%;
+    background:var(--signal);
+    transition:height .08s linear;
+  }
+
+  .mobilebar{
+    display:none;
+    position:sticky;top:0;z-index:100;
+    background:var(--blueprint-dark);
+    color:var(--paper);
+    padding:14px 18px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .mobilebar .mark{font-family:'Space Grotesk';font-weight:700;letter-spacing:.05em;}
+  .mobilebar select{
+    background:transparent;color:var(--paper);border:1px solid rgba(240,238,228,.4);
+    font-family:'IBM Plex Mono';font-size:12px;padding:6px 8px;border-radius:var(--radius);
+  }
+
+  section{
+    padding:100px 8vw 84px;
+    position:relative;
+    scroll-margin-top:20px;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--blueprint);
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{ content:''; width:26px;height:1px; background:var(--signal); display:inline-block; }
+  .section-title{
+    font-size:clamp(28px,3.4vw,44px);
+    font-weight:600;
+    max-width:760px;
+    margin-bottom:8px;
+  }
+  .section-sub{ color:var(--ink-soft); max-width:640px; font-size:16px; margin-bottom:52px; }
+
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .stagger > *{ opacity:0; transform:translateY(14px); transition:opacity .55s ease, transform .55s ease; }
+  .stagger.in > *{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion:reduce){
+    .reveal,.stagger > *{opacity:1;transform:none;transition:none;}
+    html{scroll-behavior:auto;}
+    #progress-fill{transition:none !important;}
+    .grid-bg,.grid-bg-dark{background-position:0 0 !important;}
+  }
+
+  /* ---------- HERO / ABOUT ---------- */
+  #about{
+    background:var(--blueprint-dark);
+    color:var(--paper);
+    padding-top:110px;
+    padding-bottom:70px;
+    position:relative;
+    overflow:hidden;
+  }
+  #about .grid-bg-dark{position:absolute;inset:0;z-index:0;}
+  .hero-inner{position:relative;z-index:1;}
+  .hero-kicker{ font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:.15em; text-transform:uppercase; color:var(--signal); margin-bottom:18px; }
+  .hero-name{ font-size:clamp(36px,5.6vw,64px); font-weight:700; color:var(--paper); line-height:1.04; max-width:920px; }
+  .hero-role{ margin-top:12px; font-size:clamp(15px,1.8vw,18px); color:rgba(240,238,228,0.78); max-width:640px; font-family:'Space Grotesk'; font-weight:400; }
+  .hero-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:56px; margin-top:44px; align-items:start; }
+  .hero-summary{ font-size:16.5px; color:rgba(240,238,228,0.88); max-width:560px; }
+  .hero-ctas{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;}
+  .hero-btn{
+    font-family:'IBM Plex Mono';font-size:12.5px;color:var(--paper);
+    border:1px solid rgba(240,238,228,.4);padding:10px 18px;
+    text-decoration:none;transition:.2s;display:inline-block;
+  }
+  .hero-btn:hover{border-color:var(--signal);color:var(--signal);}
+  .hero-btn.primary{background:var(--signal);border-color:var(--signal);color:var(--blueprint-dark);font-weight:600;}
+  .hero-btn.primary:hover{opacity:.88;color:var(--blueprint-dark);}
+
+  .hero-stats{ display:flex; border-top:1px solid rgba(240,238,228,.2); margin-top:44px; flex-wrap:wrap; }
+  .hero-stats .stat{ flex:1 1 auto; min-width:110px; padding:20px 14px 4px 0; border-right:1px solid rgba(240,238,228,.2); }
+  .hero-stats .stat:last-child{border-right:none;}
+  .stat-num{ font-family:'Space Grotesk'; font-weight:700; font-size:26px; color:var(--paper); }
+  .stat-label{ font-family:'IBM Plex Mono'; font-size:10px; color:rgba(240,238,228,.6); text-transform:uppercase; letter-spacing:.05em; margin-top:6px; }
+
+  .photo-frame{
+    position:relative;
+    border:1px solid rgba(240,238,228,0.28);
+    background:rgba(240,238,228,0.03);
+    aspect-ratio:4/5;
+    overflow:hidden;
+  }
+  .photo-frame img{ width:100%;height:100%; object-fit:cover; display:block; filter:grayscale(0.1) contrast(1.03); }
+  .photo-frame::before,.photo-frame::after,
+  .photo-frame .c1,.photo-frame .c2{ content:''; position:absolute; width:16px;height:16px; border-color:var(--signal); z-index:2; }
+  .photo-frame::before{top:-1px;left:-1px;border-top:2px solid var(--signal);border-left:2px solid var(--signal);}
+  .photo-frame::after{top:-1px;right:-1px;border-top:2px solid var(--signal);border-right:2px solid var(--signal);}
+  .photo-frame .c1{bottom:-1px;left:-1px;border-bottom:2px solid var(--signal);border-left:2px solid var(--signal);}
+  .photo-frame .c2{bottom:-1px;right:-1px;border-bottom:2px solid var(--signal);border-right:2px solid var(--signal);}
+  .photo-frame .placeholder{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono';font-size:11px;color:rgba(240,238,228,.4);text-align:center;padding:20px;
+  }
+
+  /* ---------- CAREER JOURNEY ---------- */
+  #journey{background:var(--paper-dim);}
+
+  .journey-pin-wrapper{
+    position:relative;
+    height:180vh;
+    margin-bottom:10px;
+  }
+  .journey-stage{
+    position:sticky;
+    top:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .glimpse-track{
+    position:relative;
+    width:88%;
+    max-width:900px;
+  }
+  .glimpse-track::before{
+    content:'';
+    position:absolute;
+    top:50%; left:0; right:0;
+    height:2px;
+    background:var(--line-strong);
+    z-index:1;
+    transform-origin:center;
+    transform:rotate(var(--rotate,0deg)) scale(var(--scale,1)) translateY(-1px);
+  }
+  .glimpse-nodes{
+    position:relative;
+    display:flex;
+    justify-content:space-between;
+    z-index:2;
+  }
+  .glimpse-node{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width:160px;
+    will-change:transform,opacity;
+  }
+  .g-top{ display:flex; flex-direction:column; align-items:center; }
+  .g-role{
+    font-family:'Space Grotesk';
+    font-weight:600;
+    font-size:12.5px;
+    color:var(--ink);
+    text-align:center;
+    line-height:1.3;
+    max-width:150px;
+  }
+  .glimpse-node:nth-child(1) .g-top{margin-bottom:6px;}
+  .glimpse-node:nth-child(2) .g-top{margin-bottom:46px;}
+  .glimpse-node:nth-child(3) .g-top{margin-bottom:14px;}
+  .glimpse-node:nth-child(4) .g-top{margin-bottom:52px;}
+  .g-stem{ width:1px; height:16px; background:var(--line-strong); }
+  .g-dot{
+    width:13px;height:13px;
+    border-radius:50%;
+    background:var(--signal);
+    border:3px solid var(--paper);
+    box-shadow:0 0 0 2px var(--blueprint);
+    flex-shrink:0;
+    margin:2px 0;
+  }
+  .g-bottom{ margin-top:16px; display:flex; flex-direction:column; align-items:center; }
+  .g-date{
+    font-family:'IBM Plex Mono';
+    font-size:10.5px;
+    color:var(--ink-soft);
+    margin-bottom:4px;
+  }
+  .g-company{
+    font-family:'Space Grotesk';
+    font-weight:700;
+    font-size:13.5px;
+    color:var(--signal);
+    text-align:center;
+  }
+  .g-tag{
+    font-family:'IBM Plex Mono';
+    font-size:10px;
+    color:var(--ink-soft);
+    margin-top:3px;
+    text-align:center;
+  }
+  .glimpse-caption{
+    margin-top:44px;
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.85;
+    animation:bob 1.6s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(6px);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .glimpse-caption{animation:none;}
+  }
+
+  .roadmap{ display:flex; flex-direction:column; gap:0; }
+  .station{ display:grid; grid-template-columns:150px 40px 1fr; gap:0; position:relative; }
+  .station .when{ font-family:'IBM Plex Mono'; font-size:12.5px; color:var(--ink-soft); padding-top:6px; }
+  .station .track{ display:flex; flex-direction:column; align-items:center; }
+  .station .track .node{ width:16px;height:16px; border-radius:50%; background:var(--signal); border:3px solid var(--paper-dim); box-shadow:0 0 0 2px var(--blueprint); margin-top:4px; flex-shrink:0; z-index:2; transform:scale(0.4); opacity:0; transition:transform .5s cubic-bezier(.34,1.56,.64,1), opacity .4s ease; }
+  .station.in .track .node{transform:scale(1);opacity:1;}
+  .station .track .line{ width:2px; flex:1; background:var(--line-strong); position:relative; overflow:hidden; }
+  .station .track .line::after{ content:''; position:absolute; left:0;top:0;width:100%;height:0%; background:var(--signal); transition:height .9s ease; }
+  .station.in .track .line::after{height:100%;}
+  .station:last-child .track .line{display:none;}
+  .station .content{ padding:0 0 50px 26px; opacity:0; transform:translateX(-14px); transition:opacity .6s ease, transform .6s ease; }
+  .station.in .content{opacity:1;transform:translateX(0);}
+  .role-title{font-size:20px;font-weight:600;}
+  .role-company{ font-family:'IBM Plex Mono'; font-size:13px; color:var(--blueprint); margin-top:4px; margin-bottom:14px; }
+  .station.milestone .content{padding-bottom:34px;}
+  .station.milestone .role-title{font-size:16px;}
+  .station.milestone .role-company{margin-bottom:0;}
+  .station.milestone .track .node{ background:var(--moss); box-shadow:0 0 0 2px var(--blueprint-dark); width:12px;height:12px; }
+  .role-bullets{ margin:0 0 16px; padding-left:20px; color:var(--ink-soft); font-size:15px; display:flex; flex-direction:column; gap:9px; }
+  .role-bullets li{padding-left:2px;}
+  .role-bullets li::marker{color:var(--signal);}
+  .role-tags{display:flex;flex-wrap:wrap;gap:8px;}
+
+  /* ---------- DOMAINS ---------- */
+  #domains{background:var(--paper);}
+  .domain-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .domain-card{ background:var(--paper); padding:26px 24px 28px; }
+  .domain-code{ font-family:'IBM Plex Mono'; font-size:11px; color:var(--signal); border:1px solid var(--signal); display:inline-block; padding:2px 9px; margin-bottom:14px; }
+  .domain-card h3{font-size:16px;margin-bottom:8px;}
+  .domain-card p{font-size:13.5px;color:var(--ink-soft);margin:0;}
+
+  /* ---------- CASE STUDIES ---------- */
+  #work{background:var(--paper-dim);}
+  .case-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:26px; }
+  .case-card{ border:1px solid var(--line-strong); background:var(--paper); padding:28px 26px 30px; }
+  .case-tag{ font-family:'IBM Plex Mono'; font-size:11px; color:var(--signal); letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px; }
+  .case-card h3{font-size:19px;margin-bottom:16px;}
+  .case-block{margin-bottom:16px;}
+  .case-block .lbl{ font-family:'IBM Plex Mono'; font-size:11px; text-transform:uppercase; color:var(--blueprint); letter-spacing:.08em; margin-bottom:6px; display:block; }
+  .case-block p{margin:0;font-size:14px;color:var(--ink-soft);}
+  .flow-steps{ list-style:none; margin:6px 0 0; padding:0; }
+  .flow-steps li{ font-family:'IBM Plex Mono'; font-size:11.5px; padding:8px 10px; background:var(--paper-dim); border:1px solid var(--line-strong); text-align:center; color:var(--ink-soft); }
+  .flow-steps li:not(:last-child){ margin-bottom:20px; position:relative; }
+  .flow-steps li:not(:last-child)::after{ content:'↓'; position:absolute; left:50%; transform:translateX(-50%); bottom:-19px; color:var(--signal); font-size:13px; line-height:1; }
+  .outcome-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:7px; }
+  .outcome-list li{ font-size:13.5px; color:var(--ink); }
+  .outcome-list li::before{ content:'✓ '; color:var(--moss); font-weight:700; }
+
+  /* ---------- HOW I WORK ---------- */
+  /* ---------- TECHNICAL DEPTH ---------- */
+  #depth{background:var(--paper-dim);}
+  .depth-cols{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:30px; }
+  .depth-col{ background:var(--paper); padding:26px 24px 28px; }
+  .depth-col h3{ font-size:15px; display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0;}
+  .dot-blue{background:var(--blueprint);}
+  .dot-signal{background:var(--signal);}
+  .dot-moss{background:var(--moss);}
+  .applied-list{ list-style:none;margin:0 0 16px;padding:0; display:flex; flex-direction:column; gap:12px; }
+  .applied-list li{ font-size:13.5px; }
+  .applied-list .skill-name{ font-weight:600; display:block; margin-bottom:2px; }
+  .applied-list .applied-ctx{ color:var(--ink-soft); font-size:13px; }
+  .chiplist{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-family:'IBM Plex Mono'; font-size:12px; padding:6px 11px;
+    border:1px solid var(--line-strong); color:var(--ink-soft);
+    background:var(--paper-dim); border-radius:var(--radius);
+  }
+  .tools-row{margin-bottom:34px;}
+  .tools-row .lbl{ display:block; font-family:'IBM Plex Mono'; font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--blueprint); margin-bottom:12px; }
+  .cert-row{display:flex;gap:22px;flex-wrap:wrap;}
+  .seal{ display:flex; align-items:center; gap:16px; border:1px dashed var(--line-strong); padding:14px 20px 14px 14px; background:var(--paper); }
+  .seal .ring{ width:52px;height:52px; border-radius:50%; border:2px solid var(--blueprint); display:flex;align-items:center;justify-content:center; font-family:'IBM Plex Mono'; font-weight:600;font-size:11px; color:var(--blueprint-dark); flex-shrink:0; position:relative; }
+  .seal .ring::after{ content:''; position:absolute; inset:4px; border:1px solid var(--blueprint); border-radius:50%; }
+  .seal .cert-name{font-weight:600;font-size:14.5px;}
+  .seal .cert-issuer{font-size:12.5px;color:var(--ink-soft);}
+
+  /* ---------- IMPACT ---------- */
+  #impact{background:var(--paper);}
+  .impact-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .impact-card{ background:var(--paper); padding:32px 18px; text-align:center; }
+  .impact-num{ font-family:'Space Grotesk'; font-weight:700; font-size:32px; color:var(--blueprint-dark); }
+  .impact-label{ font-family:'IBM Plex Mono'; font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; margin-top:8px; }
+
+  /* ---------- EDUCATION ---------- */
+  #education{background:var(--paper-dim);}
+  .edu-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:36px; }
+  .edu-card{ background:var(--paper); padding:26px 24px 28px; }
+  .edu-degree{font-size:17px;font-weight:600;margin-bottom:6px;}
+  .edu-school{font-size:13px;color:var(--blueprint);margin-bottom:12px;}
+  .edu-detail{margin:0;font-size:14px;color:var(--ink-soft);}
+  .edu-extra{border-top:1px solid var(--line-strong);padding-top:24px;}
+  .edu-extra .lbl{ display:block; font-size:11px;text-transform:uppercase;letter-spacing:.1em; color:var(--blueprint); margin-bottom:14px; }
+
+  /* ---------- RECOMMENDATIONS ---------- */
+  #recommendations{background:var(--paper);}
+  .rec-empty{
+    border:1px dashed var(--line-strong); padding:44px 40px; text-align:center; max-width:640px;
+    background:repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(0,0,0,0.015) 10px, rgba(0,0,0,0.015) 20px);
+  }
+  .rec-empty .icon{
+    width:44px;height:44px; margin:0 auto 18px; border:1px solid var(--blueprint);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono';color:var(--blueprint);font-size:18px; transform:rotate(45deg);
+  }
+  .rec-empty .icon span{transform:rotate(-45deg);display:block;}
+  .rec-empty h3{font-size:17px;margin-bottom:10px;}
+  .rec-empty p{color:var(--ink-soft);font-size:14.5px;max-width:440px;margin:0 auto 20px;}
+  .rec-empty a.cta{ font-family:'IBM Plex Mono'; font-size:12.5px; color:var(--blueprint-dark); text-decoration:none; border-bottom:1px solid var(--blueprint-dark); padding-bottom:2px; }
+
+  /* ---------- CONTACT ---------- */
+  #contact{ background:var(--blueprint-dark); color:var(--paper); }
+  #contact .section-title{color:var(--paper);}
+  #contact .section-sub{color:rgba(240,238,228,0.7);}
+  #contact .eyebrow{color:var(--signal);}
+  .contact-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px; }
+  .contact-list{list-style:none;margin:0;padding:0;}
+  .contact-list li{ border-top:1px solid rgba(240,238,228,0.18); padding:20px 0; display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; }
+  .contact-list li:last-child{border-bottom:1px solid rgba(240,238,228,0.18);}
+  .contact-list .lbl{ font-family:'IBM Plex Mono'; font-size:12px; color:rgba(240,238,228,0.55); text-transform:uppercase; letter-spacing:.1em; }
+  .contact-list .val{ font-size:18px; color:var(--paper); font-family:'Space Grotesk'; }
+  .contact-list a{color:var(--paper);text-decoration:none;border-bottom:1px solid rgba(240,238,228,0.4);}
+  .contact-list a:hover{border-bottom-color:var(--signal);color:var(--signal);}
+  .contact-note{ border:1px solid rgba(240,238,228,0.25); padding:24px 22px; font-size:14px; color:rgba(240,238,228,0.8); align-self:start; }
+  .contact-note .lbl{ font-family:'IBM Plex Mono'; font-size:11px; color:var(--signal); text-transform:uppercase; letter-spacing:.1em; margin-bottom:10px; display:block; }
+  footer{ text-align:center; padding:26px 8vw 34px; font-family:'IBM Plex Mono'; font-size:11.5px; color:rgba(240,238,228,0.45); background:var(--blueprint-dark); }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:1000px){
+    .domain-grid{grid-template-columns:repeat(2,1fr);}
+    .impact-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:32px;}
+    .depth-cols{grid-template-columns:1fr;}
+    .case-grid{grid-template-columns:1fr;}
+    .edu-grid{grid-template-columns:1fr;}
+    .contact-grid{grid-template-columns:1fr;gap:36px;}
+    .station{grid-template-columns:100px 30px 1fr;}
+    .photo-frame{max-width:340px;}
+  }
+  @media (max-width:680px){
+    .railnav{display:none;}
+    .mobilebar{display:flex;}
+    main{margin-left:0;}
+    section{padding:56px 6vw 60px;}
+    .station{grid-template-columns:24px 1fr;}
+    .station .when{display:none;}
+    .station .track{grid-row:1;}
+    .domain-grid{grid-template-columns:1fr;}
+    .impact-grid{grid-template-columns:repeat(2,1fr);}
+    .journey-pin-wrapper{height:170vh;}
+    .glimpse-node{width:78px;}
+    .g-role{font-size:9.5px;max-width:76px;}
+    .g-company{font-size:10.5px;}
+    .g-date,.g-tag{font-size:8.5px;}
+    .glimpse-node:nth-child(1) .g-top{margin-bottom:2px;}
+    .glimpse-node:nth-child(2) .g-top{margin-bottom:26px;}
+    .glimpse-node:nth-child(3) .g-top{margin-bottom:8px;}
+    .glimpse-node:nth-child(4) .g-top{margin-bottom:30px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .journey-pin-wrapper{height:auto;}
+    .journey-stage{position:relative;height:auto;padding:40px 0;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="railnav" aria-label="Section navigation">
+  <div class="progress-track" aria-hidden="true"><div id="progress-fill"></div></div>
+  <span class="mark">SGB</span>
+  <ul>
+    <li><a href="#about" data-nav>§01 HOME</a></li>
+    <li><a href="#journey" data-nav>§02 JOURNEY</a></li>
+    <li><a href="#domains" data-nav>§03 DOMAINS</a></li>
+    <li><a href="#work" data-nav>§04 WORK</a></li>
+    <li><a href="#depth" data-nav>§05 DEPTH</a></li>
+    <li><a href="#impact" data-nav>§06 IMPACT</a></li>
+    <li><a href="#education" data-nav>§07 EDU</a></li>
+    <li><a href="#recommendations" data-nav>§08 NOTES</a></li>
+    <li><a href="#contact" data-nav>§09 TALK</a></li>
+  </ul>
+  <span class="bracket">BOS · MA</span>
+</nav>
+
+<div class="mobilebar">
+  <span class="mark">SGB</span>
+  <select onchange="if(this.value)window.location.hash=this.value" aria-label="Jump to section">
+    <option value="">MENU</option>
+    <option value="#about">01 Home</option>
+    <option value="#journey">02 Journey</option>
+    <option value="#domains">03 Domains</option>
+    <option value="#work">04 Work</option>
+    <option value="#depth">05 Depth</option>
+    <option value="#impact">06 Impact</option>
+    <option value="#education">07 Education</option>
+    <option value="#recommendations">08 Notes</option>
+    <option value="#contact">09 Contact</option>
+  </select>
+</div>
+
+<main>
+
+  <!-- HOME / HERO -->
+  <section id="about">
+    <div class="grid-bg-dark"></div>
+    <div class="hero-inner">
+      <div class="hero-kicker mono">Technical Product Manager · Technical Program Manager</div>
+      <h1 class="hero-name">Shruti Ganesh<br>Bhilave</h1>
+      <p class="hero-role">Four years shipping enterprise AI, cloud, and full-stack systems — from Walmart Global Tech to Work4Flow.</p>
+
+      <div class="hero-grid">
+        <div>
+          <p class="hero-summary">
+            CSPO-certified Product &amp; Technical Manager with a background in software engineering (Walmart Global Tech) and enterprise client execution. Proven expertise in bridging engineering and business teams, analyzing market opportunities, and managing technology lifecycle service offerings across hybrid cloud and AI environments.
+          </p>
+          <div class="hero-ctas">
+            <a class="hero-btn primary" href="#work">View My Work</a>
+            <a class="hero-btn" href="mailto:shrutibhilave28@gmail.com">Email Me</a>
+            <a class="hero-btn" href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><div class="stat-num">4</div><div class="stat-label">Years Experience</div></div>
+            <div class="stat"><div class="stat-num">$200K+</div><div class="stat-label">Portfolio Value</div></div>
+            <div class="stat"><div class="stat-num">30%</div><div class="stat-label">Adoption Growth</div></div>
+            <div class="stat"><div class="stat-num">1M+</div><div class="stat-label">Apps Automated</div></div>
+          </div>
+        </div>
+        <div class="photo-frame">
+          <span class="c1"></span><span class="c2"></span>
+          <img src="" alt="Photo of Shruti Ganesh Bhilave" id="hero-photo">
+          <div class="placeholder" id="photo-placeholder">Photo coming soon</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAREER JOURNEY -->
+  <section id="journey" class="reveal">
+    <div class="eyebrow mono">§02 — Career Journey</div>
+    <h2 class="section-title">From engineer to product owner</h2>
+    <p class="section-sub">Software Engineer → Technical Program Manager → AI Product Manager.</p>
+
+    <div class="journey-pin-wrapper" id="journey-pin-wrapper">
+      <div class="journey-stage">
+        <div class="glimpse-track">
+          <div class="glimpse-nodes">
+            <div class="glimpse-node">
+              <div class="g-top"><div class="g-role">App Developer<br>Intern</div></div>
+              <div class="g-stem"></div>
+              <span class="g-dot"></span>
+              <div class="g-bottom">
+                <div class="g-date mono">PRE-UG</div>
+                <div class="g-company">ReevaWorks</div>
+                <div class="g-tag">WashU · Laundry App</div>
+              </div>
+            </div>
+            <div class="glimpse-node">
+              <div class="g-top"><div class="g-role">B.Tech<br>Computer Science</div></div>
+              <div class="g-stem"></div>
+              <span class="g-dot"></span>
+              <div class="g-bottom">
+                <div class="g-date mono">2022</div>
+                <div class="g-company">Cummins College</div>
+                <div class="g-tag">Graduated</div>
+              </div>
+            </div>
+            <div class="glimpse-node">
+              <div class="g-top"><div class="g-role">Software Engineer III<br>Full Stack</div></div>
+              <div class="g-stem"></div>
+              <span class="g-dot"></span>
+              <div class="g-bottom">
+                <div class="g-date mono">2022–24</div>
+                <div class="g-company">Walmart Global Tech</div>
+                <div class="g-tag">Information Security</div>
+              </div>
+            </div>
+            <div class="glimpse-node">
+              <div class="g-top"><div class="g-role">AI Product Manager<br>Intern</div></div>
+              <div class="g-stem"></div>
+              <span class="g-dot"></span>
+              <div class="g-bottom">
+                <div class="g-date mono">2026</div>
+                <div class="g-company">Work4Flow</div>
+                <div class="g-tag">Agentic AI Workflows</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="glimpse-caption mono">Keep scrolling for the full story ↓</div>
+      </div>
+    </div>
+
+    <div class="roadmap">
+      <div class="station">
+        <div class="when mono">JAN 2026 —<br>JUN 2026</div>
+        <div class="track"><div class="node"></div><div class="line"></div></div>
+        <div class="content">
+          <div class="role-title">AI Product Manager — Intern</div>
+          <div class="role-company mono">WORK4FLOW</div>
+          <ul class="role-bullets">
+            <li>Owned delivery for $200K+ enterprise engagements across Adobe, TC Energy, and LogicMonitor — 100% on-time execution.</li>
+            <li>Automated customer workflows with agentic AI, including an LLM evaluation framework that optimized 400 knowledge articles and cut support cases 25–30%.</li>
+            <li>Built KPI dashboards driving 30% adoption growth.</li>
+          </ul>
+          <div class="role-tags">
+            <span class="chip">Agentic AI</span>
+            <span class="chip">Workflow Automation</span>
+            <span class="chip">Concurrent with M.Eng, Northeastern University</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="station">
+        <div class="when mono">JUL 2022 —<br>DEC 2024</div>
+        <div class="track"><div class="node"></div><div class="line"></div></div>
+        <div class="content">
+          <div class="role-title">Software Engineer III (Full Stack)</div>
+          <div class="role-company mono">WALMART GLOBAL TECH — INFORMATION SECURITY</div>
+          <ul class="role-bullets">
+            <li>Owned a role-based access-management portal handling PCI-sensitive data under Tier 1 compliance.</li>
+            <li>Led a multi-provider SSO portal, deepening hands-on expertise in enterprise authentication and identity security — cut onboarding time 80%.</li>
+            <li>Designed connector architecture scaling monitoring across 1M+ applications from 2 months to 2 minutes.</li>
+          </ul>
+          <div class="role-tags">
+            <span class="chip">Information Security</span>
+            <span class="chip">Cloud &amp; DevOps</span>
+            <span class="chip">System Architecture</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="station milestone">
+        <div class="when mono">MAY 2022</div>
+        <div class="track"><div class="node"></div><div class="line"></div></div>
+        <div class="content">
+          <div class="role-title">Graduated — B.Tech, Computer Science</div>
+          <div class="role-company mono">CUMMINS COLLEGE OF ENGINEERING</div>
+        </div>
+      </div>
+
+      <div class="station">
+        <div class="when mono">PRE-<br>UNDERGRAD</div>
+        <div class="track"><div class="node"></div><div class="line"></div></div>
+        <div class="content">
+          <div class="role-title">App Developer — Intern</div>
+          <div class="role-company mono">REEVAWORKS</div>
+          <ul class="role-bullets">
+            <li>Designed user personas and journeys for WashU, an app delivering on-demand laundry services.</li>
+            <li>Built and shipped the app end-to-end — first hands-on experience turning a user problem into a working product.</li>
+          </ul>
+          <div class="role-tags">
+            <span class="chip">Product Design</span>
+            <span class="chip">App Development</span>
+            <span class="chip">0-to-1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOMAINS -->
+  <section id="domains" class="grid-bg reveal">
+    <div class="eyebrow mono">§03 — Domains &amp; Expertise</div>
+    <h2 class="section-title">Where I've worked</h2>
+    <p class="section-sub">Six areas, four years, one throughline.</p>
+
+    <div class="domain-grid stagger">
+      <div class="domain-card">
+        <div class="domain-code">AI</div>
+        <h3>AI &amp; Agentic AI</h3>
+        <p>AI-driven relevance ranking, LLM evaluation frameworks, RAG fundamentals, knowledge automation.</p>
+      </div>
+      <div class="domain-card">
+        <div class="domain-code">CL</div>
+        <h3>Cloud &amp; Enterprise SaaS</h3>
+        <p>Hybrid cloud service offerings, multi-provider SSO, enterprise integrations at scale.</p>
+      </div>
+      <div class="domain-card">
+        <div class="domain-code">SE</div>
+        <h3>Software Engineering</h3>
+        <p>Full-stack applications, REST/GraphQL APIs, async processing, CI/CD pipelines.</p>
+      </div>
+      <div class="domain-card">
+        <div class="domain-code">PM</div>
+        <h3>Product Management</h3>
+        <p>Discovery, roadmaps, backlog prioritization, PRDs, adoption &amp; value metrics.</p>
+      </div>
+      <div class="domain-card">
+        <div class="domain-code">PG</div>
+        <h3>Program Management</h3>
+        <p>Cross-functional delivery, release planning, UAT, risk &amp; stakeholder management.</p>
+      </div>
+      <div class="domain-card">
+        <div class="domain-code">AU</div>
+        <h3>Automation &amp; Workflow</h3>
+        <p>ServiceNow administration, ITSM/CSM patterns, intelligent knowledge workflows.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED WORK / CASE STUDIES -->
+  <section id="work" class="reveal">
+    <div class="eyebrow mono">§04 — Featured Work</div>
+    <h2 class="section-title">Case studies</h2>
+    <p class="section-sub">Four problems, four approaches.</p>
+
+    <div class="case-grid">
+
+      <div class="case-card">
+        <div class="case-tag mono">AI / Agentic — Work4Flow</div>
+        <h3>Knowledge Article Optimization</h3>
+        <div class="case-block">
+          <span class="lbl">The Problem</span>
+          <p>1,000+ KB articles were inconsistent and unmonitored, weakening AI-support quality.</p>
+        </div>
+        <div class="case-block">
+          <span class="lbl">My Role</span>
+          <p>Product Manager — discovery, requirements, prioritization, delivery.</p>
+        </div>
+        <div class="case-block">
+          <span class="lbl">Process</span>
+          <ul class="flow-steps">
+            <li>Cluster articles by topic similarity</li>
+            <li>Build semantic relevance-ranking model</li>
+            <li>Design LLM evaluation framework + rubric</li>
+            <li>Regression test &amp; ship</li>
+          </ul>
+        </div>
+        <div class="case-block">
+          <span class="lbl">Outcome</span>
+          <ul class="outcome-list">
+            <li>25–30% fewer support cases</li>
+            <li>400 flagged articles optimized</li>
+            <li>Manual review replaced with automated flagging</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-tag mono">Cloud / Enterprise — Walmart Global Tech</div>
+        <h3>Enterprise SSO Portal</h3>
+        <div class="case-block">
+          <span class="lbl">The Problem</span>
+          <p>Manual identity configuration across providers slowed enterprise onboarding.</p>
+        </div>
+        <div class="case-block">
+          <span class="lbl">My Role</span>
+          <p>Software Engineer III — owned architecture and delivery.</p>
+        </div>
+        <div class="case-block">
+          <span class="lbl">Process</span>
+          <ul class="flow-steps">
+            <li>Map identity-provider requirements</li>
+            <li>Automate token-lifecycle management</li>
+            <li>Build self-service onboarding portal</li>
+            <li>Scale monitoring across 1M+ applications</li>
+          </ul>
+        </div>
+        <div class="case-block">
+          <span class="lbl">Outcome</span>
+          <ul class="outcome-list">
+            <li>80% faster enterprise onboarding</li>
+            <li>Monitoring cut from 2 months to 2 minutes</li>
+            <li>80% fewer post-deployment defects</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-tag mono">Product Strategy — Independent</div>
+        <h3>NUDGE: Group Accountability App</h3>
+        <div class="case-block">
+          <span class="lbl">The Problem</span>
+          <p>Groups lack a lightweight way to stay accountable to commitments.</p>
+        </div>
+        <div class="case-block">
+          <span class="lbl">My Role</span>
+          <p>Product lead — validation, strategy, roadmap (4-person team).</p>
+        </div>
+        <div class="case-block">
+          <span class="lbl">Process</span>
+          <ul class="flow-steps">
+            <li>25+ user interviews across 3 segments</li>
+            <li>Size $34.7M TAM, benchmark 6 competitors</li>
+            <li>Author MRD/PRD &amp; define MVP</li>
+            <li>Phase 4-quarter roadmap with go/no-go gates</li>
+          </ul>
+        </div>
+        <div class="case-block">
+          <span class="lbl">Outcome</span>
+          <ul class="outcome-list">
+            <li>$1.99/user/month model defined</li>
+            <li>Differentiated compliance-based positioning</li>
+            <li>Cross-functional team aligned on phased rollout</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="case-card">
+        <div class="case-tag mono">Applied Engineering — Independent</div>
+        <h3>AI Research Paper Analysis Tool</h3>
+        <div class="case-block">
+          <span class="lbl">The Problem</span>
+          <p>Researchers manually extract entity and relationship data from long, unstructured papers.</p>
+        </div>
+        <div class="case-block">
+          <span class="lbl">My Role</span>
+          <p>Independent builder — design and implementation, end-to-end.</p>
+        </div>
+        <div class="case-block">
+          <span class="lbl">Process</span>
+          <ul class="flow-steps">
+            <li>Define extraction schema</li>
+            <li>Build FastAPI REST service</li>
+            <li>Integrate GPT-4o for extraction</li>
+            <li>Optimize async pipeline for throughput</li>
+          </ul>
+        </div>
+        <div class="case-block">
+          <span class="lbl">Outcome</span>
+          <ul class="outcome-list">
+            <li>Shipped as a working REST service</li>
+            <li>Pipeline tuned for large-document inference</li>
+            <li>Fully independent build, start to finish</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TECHNICAL DEPTH -->
+  <section id="depth" class="reveal">
+    <div class="eyebrow mono">§05 — Technical Depth</div>
+    <h2 class="section-title">Skills &amp; certifications</h2>
+    <p class="section-sub">Where each skill actually got used.</p>
+
+    <div class="depth-cols stagger">
+      <div class="depth-col">
+        <h3><span class="dot dot-blue"></span>Product &amp; Business</h3>
+        <ul class="applied-list">
+          <li><span class="skill-name">Product Strategy</span><span class="applied-ctx">Defined Work4Flow's enterprise service scope and value proposition.</span></li>
+          <li><span class="skill-name">Roadmapping</span><span class="applied-ctx">Built NUDGE's 4-quarter MVP rollout with go/no-go gates.</span></li>
+          <li><span class="skill-name">Customer Discovery</span><span class="applied-ctx">Ran 25+ user interviews across 3 market segments.</span></li>
+          <li><span class="skill-name">Metrics &amp; Experimentation</span><span class="applied-ctx">Built adoption dashboards driving 30% growth.</span></li>
+        </ul>
+        <div class="chiplist">
+          <span class="chip">Agile/Scrum</span>
+          <span class="chip">Backlog Management</span>
+          <span class="chip">JIRA</span>
+          <span class="chip">Executive Presentation</span>
+        </div>
+      </div>
+      <div class="depth-col">
+        <h3><span class="dot dot-signal"></span>Technical</h3>
+        <ul class="applied-list">
+          <li><span class="skill-name">System Architecture</span><span class="applied-ctx">Scaled connector-style integrations across 1M+ applications.</span></li>
+          <li><span class="skill-name">AI/LLMs &amp; RAG</span><span class="applied-ctx">Powered knowledge-article optimization and relevance ranking.</span></li>
+          <li><span class="skill-name">APIs (REST/GraphQL)</span><span class="applied-ctx">Built Walmart's SSO and permissioning systems.</span></li>
+          <li><span class="skill-name">SQL &amp; Telemetry</span><span class="applied-ctx">Powered KPI dashboards tracking usage adoption.</span></li>
+        </ul>
+        <div class="chiplist">
+          <span class="chip">Cloud (Azure)</span>
+          <span class="chip">Prompt Engineering</span>
+          <span class="chip">Model Evaluation</span>
+        </div>
+      </div>
+      <div class="depth-col">
+        <h3><span class="dot dot-moss"></span>Engineering</h3>
+        <ul class="applied-list">
+          <li><span class="skill-name">Python / FastAPI</span><span class="applied-ctx">Built the research-paper analysis service, independently.</span></li>
+          <li><span class="skill-name">Java / Spring Boot</span><span class="applied-ctx">Built Walmart's access-management portal.</span></li>
+          <li><span class="skill-name">JavaScript / React</span><span class="applied-ctx">Shipped full-stack features across both roles.</span></li>
+          <li><span class="skill-name">Async Processing</span><span class="applied-ctx">Scaled integration monitoring from months to minutes.</span></li>
+        </ul>
+        <div class="chiplist">
+          <span class="chip">CI/CD</span>
+          <span class="chip">Docker</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tools-row">
+      <span class="lbl mono">Tools</span>
+      <div class="chiplist">
+        <span class="chip">Azure</span>
+        <span class="chip">Docker</span>
+        <span class="chip">Git / CI-CD</span>
+        <span class="chip">ServiceNow</span>
+        <span class="chip">JIRA</span>
+      </div>
+    </div>
+
+    <div class="cert-row">
+      <div class="seal">
+        <div class="ring">CSPO</div>
+        <div>
+          <div class="cert-name">Certified Scrum Product Owner</div>
+          <div class="cert-issuer">Scrum Alliance</div>
+        </div>
+      </div>
+      <div class="seal">
+        <div class="ring">CSA</div>
+        <div>
+          <div class="cert-name">Certified System Administrator</div>
+          <div class="cert-issuer">ServiceNow</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section id="impact" class="grid-bg reveal">
+    <div class="eyebrow mono">§06 — Impact at a Glance</div>
+    <h2 class="section-title">Numbers behind the work</h2>
+    <p class="section-sub">The strongest results in one place.</p>
+
+    <div class="impact-grid stagger">
+      <div class="impact-card"><div class="impact-num">4</div><div class="impact-label">Years Experience</div></div>
+      <div class="impact-card"><div class="impact-num">$200K+</div><div class="impact-label">Enterprise Initiatives Managed</div></div>
+      <div class="impact-card"><div class="impact-num">30%</div><div class="impact-label">Adoption Growth</div></div>
+      <div class="impact-card"><div class="impact-num">90%+</div><div class="impact-label">UAT First-Release Acceptance</div></div>
+      <div class="impact-card"><div class="impact-num">80%</div><div class="impact-label">Faster Enterprise Onboarding</div></div>
+      <div class="impact-card"><div class="impact-num">25–30%</div><div class="impact-label">Fewer Support Cases</div></div>
+      <div class="impact-card"><div class="impact-num">1M+</div><div class="impact-label">Applications Automated</div></div>
+      <div class="impact-card"><div class="impact-num">35%</div><div class="impact-label">Less Rework</div></div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education" class="reveal">
+    <div class="eyebrow mono">§07 — Foundation</div>
+    <h2 class="section-title">Education</h2>
+    <p class="section-sub">The grounding behind the engineering and product work above.</p>
+
+    <div class="edu-grid stagger">
+      <div class="edu-card">
+        <div class="edu-degree">M.Eng, Engineering Management</div>
+        <div class="edu-school mono">Northeastern University — Dec 2026</div>
+        <p class="edu-detail">Engineering Project Management, Economic Decision Making, Digital Product Design &amp; Management</p>
+      </div>
+      <div class="edu-card">
+        <div class="edu-degree">B.Tech, Computer Science</div>
+        <div class="edu-school mono">Cummins College — May 2022</div>
+      </div>
+    </div>
+
+    <div class="edu-extra">
+      <span class="lbl mono">Leadership &amp; Volunteering</span>
+      <div class="chiplist">
+        <span class="chip">VP Marketing, Energy Systems Society — Northeastern</span>
+        <span class="chip">Basketball Captain &amp; Sports Secretary</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECOMMENDATIONS -->
+  <section id="recommendations" class="grid-bg reveal">
+    <div class="eyebrow mono">§08 — Field Notes</div>
+    <h2 class="section-title">Recommendations</h2>
+    <p class="section-sub">Manager and peer notes will be pinned here as they come in.</p>
+
+    <div class="rec-empty">
+      <div class="icon"><span>+</span></div>
+      <h3>This section is under construction</h3>
+      <p>Recommendations from managers, teammates, or clients will show up here once added. Have one to share?</p>
+      <a class="cta" href="mailto:shrutibhilave28@gmail.com?subject=A%20recommendation%20for%20Shruti">Send a recommendation →</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="eyebrow mono">§09 — Get in Touch</div>
+    <h2 class="section-title">Contact me</h2>
+    <p class="section-sub">Open to Technical Product Manager and Technical Program Manager roles — happy to talk shop first.</p>
+
+    <div class="contact-grid">
+      <ul class="contact-list">
+        <li><span class="lbl mono">Email</span><span class="val"><a href="mailto:shrutibhilave28@gmail.com">shrutibhilave28@gmail.com</a></span></li>
+        <li><span class="lbl mono">LinkedIn</span><span class="val"><a href="https://linkedin.com" target="_blank" rel="noopener">linkedin.com/in/shrutibhilave</a></span></li>
+        <li><span class="lbl mono">Location</span><span class="val">Boston, MA</span></li>
+      </ul>
+      <div class="contact-note">
+        <span class="lbl">Note</span>
+        Update the LinkedIn link above with your exact profile URL — a placeholder handle is used until you drop in the real one.
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>© 2026 Shruti Ganesh Bhilave — built with care, one spec sheet at a time.</footer>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // hide broken hero photo, show placeholder text instead
+  const heroPhoto = document.getElementById('hero-photo');
+  const photoPlaceholder = document.getElementById('photo-placeholder');
+  if(heroPhoto){
+    if(!heroPhoto.getAttribute('src')){
+      heroPhoto.style.display = 'none';
+    } else {
+      photoPlaceholder.style.display = 'none';
+      heroPhoto.addEventListener('error', ()=>{
+        heroPhoto.style.display = 'none';
+        photoPlaceholder.style.display = 'flex';
+      });
+    }
+  }
+
+  // fade/slide reveal for whole sections and blocks
+  const reveals = document.querySelectorAll('.reveal, .stagger');
+  const revealObs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); revealObs.unobserve(e.target); } });
+  }, {threshold:0.12});
+  reveals.forEach(el=>revealObs.observe(el));
+
+  // staggered delay for children of .stagger containers
+  document.querySelectorAll('.stagger').forEach(group=>{
+    Array.from(group.children).forEach((child,i)=>{
+      child.style.transitionDelay = (i*70) + 'ms';
+    });
+  });
+
+  // roadmap stations draw in one at a time
+  const stations = document.querySelectorAll('.station');
+  const stationObs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); stationObs.unobserve(e.target); } });
+  }, {threshold:0.35});
+  stations.forEach(s=>stationObs.observe(s));
+
+  // active nav highlight
+  const navLinks = document.querySelectorAll('.railnav a[data-nav]');
+  const sections = document.querySelectorAll('main section');
+  const navObs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      const id = entry.target.getAttribute('id');
+      const link = document.querySelector('.railnav a[href="#'+id+'"]');
+      if(!link) return;
+      if(entry.isIntersecting){
+        navLinks.forEach(l=>l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-40% 0px -50% 0px'});
+  sections.forEach(s=>navObs.observe(s));
+
+  // scroll-driven effects: progress rail + subtle grid parallax
+  const progressFill = document.getElementById('progress-fill');
+  const parallaxLayers = document.querySelectorAll('.grid-bg, .grid-bg-dark');
+  let ticking = false;
+
+  // journey glimpse: horizontal timeline collapses/rotates into vertical as user scrolls
+  const journeyWrapper = document.getElementById('journey-pin-wrapper');
+  const glimpseTrackLine = journeyWrapper ? journeyWrapper.querySelector('.glimpse-track') : null;
+  const glimpseNodes = journeyWrapper ? journeyWrapper.querySelectorAll('.glimpse-node') : [];
+  const glimpseCaption = journeyWrapper ? journeyWrapper.querySelector('.glimpse-caption') : null;
+
+  function updateJourneyGlimpse(){
+    if(!journeyWrapper || reduceMotion) return;
+    const rect = journeyWrapper.getBoundingClientRect();
+    const wrapperHeight = journeyWrapper.offsetHeight;
+    const viewportH = window.innerHeight;
+    const scrollable = wrapperHeight - viewportH;
+    if(scrollable <= 0) return;
+    let progress = -rect.top / scrollable;
+    progress = Math.max(0, Math.min(1, progress));
+
+    // line rotates from horizontal toward vertical and shrinks, then fades
+    const rotate = progress * 78; // degrees
+    const scale = 1 - progress * 0.55;
+    const lineOpacity = progress < 0.85 ? 1 : Math.max(0, 1 - (progress - 0.85) / 0.15);
+    if(glimpseTrackLine){
+      glimpseTrackLine.style.setProperty('--rotate', rotate + 'deg');
+      glimpseTrackLine.style.setProperty('--scale', scale);
+      glimpseTrackLine.style.opacity = lineOpacity;
+    }
+
+    // nodes collapse toward center + fade out as progress advances
+    const n = glimpseNodes.length;
+    glimpseNodes.forEach((node, i)=>{
+      const centerOffset = (i - (n-1)/2); // negative for left nodes, positive for right
+      const collapseX = -centerOffset * progress * 90;
+      const collapseY = progress * 30;
+      const fade = progress < 0.6 ? 1 : Math.max(0, 1 - (progress - 0.6) / 0.4);
+      node.style.transform = `translate(${collapseX}px, ${collapseY}px) scale(${1 - progress*0.3})`;
+      node.style.opacity = fade;
+    });
+    if(glimpseCaption){
+      glimpseCaption.style.opacity = Math.max(0, 0.85 - progress * 1.4);
+    }
+  }
+
+  function onScroll(){
+    const doc = document.documentElement;
+    const scrollTop = window.scrollY;
+    const max = doc.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? Math.min(100, (scrollTop / max) * 100) : 0;
+    if(progressFill) progressFill.style.height = pct + '%';
+    if(!reduceMotion){
+      const offset = (scrollTop * 0.06) % 40;
+      parallaxLayers.forEach(layer=>{
+        layer.style.backgroundPosition = '0 ' + (-offset) + 'px, 0 0';
+      });
+    }
+    updateJourneyGlimpse();
+    ticking = false;
+  }
+  window.addEventListener('scroll', ()=>{
+    if(!ticking){ requestAnimationFrame(onScroll); ticking = true; }
+  }, {passive:true});
+  onScroll();
+</script>
+
+</body>
+</html>
